@@ -47,6 +47,13 @@ git remote add origin http://github.com/salvamagri95/Tesi_git
 #per vedere quanti remote ho
 git remote -v
 
+#per cambiare il remote
+git remote set-url origin <nuovo link da assegnare all'etichetta origin>
+
+#you can also duplicate an existing repository in a clean folder with
+git clone http://IP/path/to/repository
+#this will automatically also set up the remote for you
+
 #per aggiornare il file sul pc all'ultimo sulla repo
 git pull origin master
 
