@@ -1,0 +1,56 @@
+git config --global user.name "Salvatore Magrì"
+git config --global user.mail "salvatore.magri@studio.unibo.it"
+
+#per creare la repository (solo la prima volta)
+git init
+
+#per vedere com'è la situazione
+git status
+
+#per vedere lo storico della repo
+git log
+git log myfile.txt #se voglio lo storico solo del singolo file
+
+#rendo tracciabile un file
+git add myfile.txt 
+
+#commit -a (per fare il commit di tutti i file che sto tracciando) 
+git commit -a -m "commento in cui dico cos'è"
+
+#per vedere le differenze dovute alla modifica
+git diff myfile.txt
+git diff 		#per tutta la repo
+
+#vedo la differenza tra il file e l'ultimo commit
+git diff HEAD myfile.txt 
+
+#e il penultimo e quello prima
+git diff HEAD~1 myfile.txt
+git diff HEAD~2 myfile.txt
+
+#versione specifica SHA! dovrebbe essere il codice identificativo della versione
+git diff <commit SHA1> myfile.txt
+
+#per rimpiazzare la versione del file con una precedente
+git checkout <commit SHA1> myfile.txt
+
+#se voglio far tornare l'intera repo come era all'ultimo commit
+git checkout master
+#perdo tutte le modifiche fatte prima del commit!!!
+
+git rm myfile.txt
+git mv myfile.txt ilmiofile.txt
+
+#collego a github
+git remote add origin http://github.com/salvamagri95/Tesi_git
+
+#per vedere quanti remote ho
+git remote -v
+
+#per aggiornare il file sul pc all'ultimo sulla repo
+git pull origin master
+
+#per aggiornare la repo, con le cose di cui ho fatto il commit
+git push origin master
+
+
