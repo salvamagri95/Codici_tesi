@@ -50,3 +50,36 @@ echo "Settimana=" ${Settimana[*]}
 echo "Settimana[1]=" ${Settimana[1]}
 echo "Settimana è lungo: "${#Settimana[*]}
 echo "Mesi="${Mesi[*]}
+
+#	REINDERIZZAMENTO E SCRITTURA OUTPUT
+#	scrivo in out.txt l'out del comando ls
+ls>out.txt
+#	se voglio accodare ad un file già esistente
+ls>>out.txt
+#	con | do come input del secondo comando l'out del primo
+#	pipe può essere usato anche più volte
+ls -l|cat
+#	equivale a
+cat<(ls -l)
+#	cat stampa a schermo il file out, ordinato al contrario (-r) 
+#	con un unico esemplare di ogni riga (uniq)
+cat out.txt|sort -r| uniq
+#	con read metto in pausa il programma
+read
+
+#	se voglio usare l'out di un comando come parametro di un altro
+#	uso  ` (alt + 9 col mac, alt gr + 5 con linux)
+echo "il nome dell'utente è `whoami`"
+#	sinonimo è
+echo "il nome dell'utente è $(whoami)"
+#	esempio (con -e posso usare i caratteri speciale \r \n \t etc..
+echo -e "Ecco il contenuto del file out.txt \r\n`cat out.txt`"
+rm out.txt
+
+#	per creare un array contenente tutti i nomi delle cartelle nell'indirizzo DI
+DI=./
+files=(`ls $DI`)
+
+
+
+
