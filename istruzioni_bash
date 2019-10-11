@@ -1,0 +1,52 @@
+# 	come impostare gedit:
+# sh	Larg.tab:4	visualizza numero riga	evidenzia riga corrente
+#
+
+# 	SITI IMPORTANTI
+#
+# http://manpages.ubuntu.com/  (documentazione dei comandi a terminale)
+# http://ss64.com/bash/ (elenco dalla A alla Z dei comandi esistenti)
+
+#	COMMENTI
+# così commento una riga
+:<<blocco_commento
+così commento un blocco
+di più
+righe
+blocco_commento
+
+#	VARIABILI
+# numerica
+Pippo=40
+# stringa
+pippo="questa frase è la variabile pippo"
+
+echo $Pippo
+echo "Pippo="$Pippo
+
+# esistono variabili predefinite
+echo "PWD="$PWD		#directory corrente
+echo "HOME="$HOME 		#percorso della propria home
+echo "USER="$USER 		#nome della propria user
+echo "RANDOM="$RANDOM 	#ogni volta che viene letta ritorna un valore casuale
+echo "LANG="$LANG 		#lingua attiva sul sistema
+echo "HOSTTYPE="$HOSTTYPE 	#architettura del sistema (es. x86_64)
+#
+#per vedere l'elenco completo dal terminale:
+# echo $ e due volte tab
+
+# TUPLE
+# in bash esistono solo 1D e si possono definire così:
+
+Settimana[1]=Lunedì
+Settimana[2]=Martedì
+Settimana[3]="Se voglio mettere gli spazi così se no li vede male"
+#Meglio così sempre:
+Settimana[4]="Giovedì"
+Mesi=([1]=gennaio [2]=febbraio)
+Numeri=(uno due 3 4 cinque)
+
+echo "Settimana=" ${Settimana[*]}
+echo "Settimana[1]=" ${Settimana[1]}
+echo "Settimana è lungo: "${#Settimana[*]}
+echo "Mesi="${Mesi[*]}
