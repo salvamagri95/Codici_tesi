@@ -14,7 +14,13 @@ così commento un blocco
 di più
 righe
 blocco_commento
-
+#********************************************************************
+#
+#
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#
+#
+#********************************************************************
 #	VARIABILI
 # numerica
 Pippo=40
@@ -34,6 +40,14 @@ echo "HOSTTYPE="$HOSTTYPE 	#architettura del sistema (es. x86_64)
 #
 #per vedere l'elenco completo dal terminale:
 # echo $ e due volte tab
+
+#********************************************************************
+#
+#
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#
+#
+#********************************************************************
 
 # TUPLE
 # in bash esistono solo 1D e si possono definire così:
@@ -80,6 +94,355 @@ rm out.txt
 DI=./
 files=(`ls $DI`)
 
+#********************************************************************
+#
+#
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#
+#
+#********************************************************************
 
+#	GESTIONE STRINGHE	
+echo Pippa =\> $(ls) #ritorna Pippa => elenco orizzontale di file e 
+#cartelle della cartella corrente sempre separati da uno spazio
+
+#	espandere una sequenza con le graffe
+echo {a..e} # ritorna "a b c d e" (capisce, con .., come deve continuare la sequenza
+
+#	per creare così una variabile
+Pippo=$(echo {1..5})
+
+echo n{1,2,3}-xx # ritorna "n1-xx n2-xx n3-xx"
+
+x="Ciao Mondo"; echo ${x^^} #ritorna la stringa tutta maiuscola
+x="Ciao Mondo"; echo ${x,,} #ritorna la stringa tutta minuscola 
+x="ciao mondo", echo ${x^}  
+#ritorna la stringa con solo la prima lettera maiuscola "Ciao mondo"
+x="ciao mondo";echo ${x:0:3} 
+#ritorna i primi 3 caratteri della stringa "cia"
+# parto da 0 e considero 3 caratteri!!! non è da posizione 0 a 3
+x="ciao mondo";echo ${x:3:5} 
+#ritorna 5 caratteri a partire dal quarto "o mon" parto da 3 e stampo 5 caratteri
+x="oggi è.il 02.03.2013"; echo ${#x} 
+#ritorna la lunghezza della stringa ⇒ 20
+x="oggi è.il 02.03.2013"; echo ${x#*.} 
+#elimina tutta la stringa dall'inizio fino alla prima occorrenza di "." ⇒ il 02.03.2013
+x="oggi è.il 02.03.2013"; echo ${x##*.} #elimina tutta la stringa dall'inizio fino all'ultima occorrenza di "." ⇒ 2013
+x="oggi è.il 02.03.2013"; echo ${x%.*} #elimina tutta la stringa dalla fine fino alla prima occorrenza di "." ⇒ oggi è.il 02.03
+x="oggi è.il 02.03.2013"; echo ${x%%.*} #elimina tutta la stringa dalla fine fino all'ultima occorrenza di "." ⇒ oggi è
+#	per caratteri speciali metto \
+# \$ \n \t \> \<
+echo $USER # ritorna il contenuto della variabile USER
+echo \$USER # ritorna $USER
+
+# virgolette
+
+echo file ~/Musica/*.txt Pippa =\> $(whoami) 
+#ritorna file /home/nicola/Musica/On_the_Road_Again (Linux).txt Pippa => salvatore
+
+#con le virgolette semplici non interpreta nulla
+echo 'file ~/Musica/*.txt Pippa =\> $(whoami)' 
+#ritorna file ~/Musica/*.txt Pippa =\> $(whoami)
+
+# con le doppie non interpreta i comandi ma le espansioni si 
+echo "file ~/Musica/*.txt Pippa =\> $(whoami)" 
+#ritorna file ~/Musica/*.txt Pippa =\> salvatore
+
+#	comando tr per modificare la forma delle stringhe
+# tr [cosa cerco] [come lo trasformo]
+echo "Questo è un messaggio stringa" | tr '[a-z]' ['A-Z'] 
+# ritorna: QUESTO è UN MESSAGGIO STRINGA
+echo "Questo è un messaggio stringa" | tr '[a-z,è]' ['A-Z',È]
+# ritorna: QUESTO È UN MESSAGGIO STRINGA
+echo "Questo è un messaggio stringa" | tr 's' '$'
+# ritorna: Que$to è un me$$aggio $tringa
+echo "Questo è un messaggio stringa" | tr -d 's'
+# ritorna: Queto è un meaggio tringa (elimina le s)
+echo "Questo è un messaggio stringa" | tr -s 'g' '*'
+#ritorna: Questo è un messa*io strin*a
+# l'opzione -s fa si che tutte le occorrenze vengano sostituite da un solo carattere, anche se l'occorrenza è multipla
+
+#********************************************************************
+#
+#
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#
+#
+#********************************************************************
+
+#	LE DECISIONI
+#	CONFRONTO TRA INTERI!!!!
+D=1124
+N=$((D/2))
+M=$((N*2))
+echo; echo D=$D
+echo N=$N
+echo M=$M
+
+if [ "$D" = "$M" ]
+# equivalente a:
+#if [ "$D" -eq "$M" ] 
+then
+	echo "Il valore della variabile D è PARI"
+else
+    echo "Il valore della variabile D è DISPARI"
+fi
+
+read
+
+# -eq → uguale a
+# -ne → non uguale a
+# -gt → maggiore di
+# -ge → maggiore o uguale a
+# -lt → minore di
+# -le → minore o uguale a
+
+# confronto fra stringhe
+S1="Paperino"
+S2="zio Paperone"
+S3="Paperino"
+
+echo "======================================================="
+echo "S1="$S1;echo "S2="$S2;echo "S3="$S3;echo
+
+#	uguale
+if [ "$S1" = "$S3" ] 
+then
+	echo "Le stringhe S1 e S3 sono uguali"
+fi
+
+#	diverso
+if [ "$S1" != "$S2" ] 
+then
+	echo "Le stringhe S1 e S2 non sono uguali"
+fi
+
+#   !!!!
+# if [ ... ] then ... elif [ ... ] then ... else ... fi
+
+
+#	due stringhe sono uguali
+if [ "${S1:0:2}" = "${S2:4:2}" ] 
+then
+	echo "Le stringhe S1 e S2 hanno la parte 'Pa' in comune"
+elif [ "${S1:1:2}" = "${S2:5:2}" ]
+then
+	echo "Le stringhe S1 e S2 hanno la parte 'ap' in comune"
+
+fi
+
+#	se la stringa non è vuota
+if [ -n "$S1" ] 
+then
+	echo "La stringa S1 non è vuota"
+fi
+
+#	se la stringa è vuota
+if [ -z "$S4" ] 
+then
+	echo "La stringa S4 è vuota o inesistente"
+fi
+
+#	minore di
+if [ "$S1" \< "$S2" ] 
+then
+	echo "La stringa S1 è più corta della stringa S2"
+fi
+
+#	maggiore di
+if [ "$S2" \> "$S1" ] && [ -n "$S3" ] 
+then
+	echo "La stringa S2 è più lunga della stringa S1 e la stringa S3 non è vuota"
+fi
+
+# && -> AND
+# || -> OR
+
+
+#	se ho più condizioni uso il comando case
+# 
+#case ... in cond1) ...;; cond2) ...;; condn) ...;; *) (altrimenti);; esac)
+#
+# il comando case esegue la prima delle opzioni verificate
+# Esempio di comando case
+M=15
+N=3
+case "$M" in
+	0) ;;       # non fa niente
+	"$N")       echo "M e N sono uguali";;
+	2 | 4 | 15) echo "il valore di M è 2 o 4 o 15";;
+	[0-9])      echo "il valore di M è una cifra tra 0 e 9";;
+	[0-9]*)     echo "il valore di M inizia con un numero";;
+	[a-zA-Z])   echo "il valore di M è una lettera dell'alfabeto";; 
+	[a-zA-Z]*)  echo "il valore di M inizia con una lettera";; 
+	[!0-9]*)    echo "il valore di M non inizia con un numero";; 
+	*)          echo  "Errore - parametro non previsto";;
+esac
+
+#********************************************************************
+#
+#
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#
+#
+#********************************************************************
+#
+#	CICLI
+#
+# for arg in (lista) do ... done
+#
+# for ... do ... done
+#
+# while ... do ... done
+#
+# until ... do ... done
+
+
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+echo "******************** FOR CON LISTA FILE IN CARTELLA *******************"
+for docu in $(ls *.sh) 
+do
+	echo "File contenuto nella cartella: $docu"
+done
+echo
+read
+
+
+
+# Esempi di comando for con lista argomenti
+echo "******************** FOR CON LISTA ARGOMENTI SINGOLI *******************"
+for pianeta in "Mercurio" "Venere" "Terra" "Marte" "Giove"
+do
+	echo "$pianeta"
+done
+
+
+echo "******************** FOR CON LISTA ARGOMENTI MULTIPLI *******************"
+for pianeta in "Mercurio 36 circa" "Venere 67 circa" "Terra 93 circa" "Marte 142 circa" "Giove 483 circa"
+do
+	set -- $pianeta
+	echo "$1 è distante $2,000,000 di miglia dal sole $3"
+done
+echo
+read
+
+# Esempio di comando for con limite
+echo "******************** FOR CON LIMITE *******************"
+LIMITE=10
+for ((a=1; a <= LIMITE ; a++))
+do
+	echo -n "$a "
+done
+echo
+read
+
+# esempio di comando while (fino a che)
+echo "******************** WHILE *******************"
+var0=0
+LIMITE=10
+while [ "$var0" -lt "$LIMITE" ]  #equivalente: while (( var0 < LIMITE ))
+do
+	echo -n "$var0 "
+	var0=`expr $var0 + 1` #equivalente: var0=$((var0+1))
+done
+
+echo
+read
+
+# esempio di comando until (fino al momento in cui)
+echo "******************** UNTIL *******************"
+LIMITE=10
+var=0
+until (( var > LIMITE ))
+do
+	echo -n "$var "
+	(( var++ ))
+done
+echo
+
+#********************************************************************
+#
+#
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#
+#
+#********************************************************************
+
+#	FUNZIONI
+#	le definisco prima dell corpo principale dello script (dopo la riga uno in cui metto #!/bin/bash
+
+# le definisco come
+# nome_funz(){......}
+
+# prima di definire le funzioni definisco le variabili globali (quelle riconosciute all'interno della funzione
+# Le variabili che definisco nelle funzioni sono locali e fuori non esistono
+
+# all'interno della funzione definisco le variabili locale scrivento
+glo_var_=""	#variablie globale
+output=0	#variabile globale
+
+mia_fun()
+{	loc_var=15	  #variabile locale
+	echo "ciao"
+	glo_var="mia_fun" #così modifico la variabile global	
+	return 5  	  #posso ritornare al massimo un valore <= 255
+} 
+
+
+# Esempio di funzione con un paio di parametri
+# all'interno della funzione $1 e $2 sono i parametri 1 e 2
+# che definirò nel programma principale
+mia_fun_par()
+{ 
+	local loc_var=455
+	echo "Questa è la funzione 'mia_fun_par' con parametro1=$1 e parametro2=$2"
+	echo "######################################################"
+	glo_var="mia_fun_par"
+	output=$loc_var
+	
+	#se il primo parametro è "Pippo" lo script viene interrotto
+	if [ "$1" = "Pippo" ]
+	then
+		echo "L'elaborazione termina qui";read
+		exit
+	# exit esce dallo script bas!! torna al terminale
+	else 
+		return 10  #al massimo un valore fino a 255
+	fi
+}
+
+
+#	PROGRAMMA PRINCIPALE
+# nel programma principale posso chiamare questa funzione semplicemente scrivendo:
+mia_fun
+
+# con
+echo "questo è il codice di ritorno dell'ultimo comando eseguito=$?"
+#	per verificare se è andata a buon fine, o per memorizzare 		l'output
+# posso stampare le variabili globali che sono state modificate, ma le
+# locali non esistono!!!
+echo "glo_var="$glo_var
+
+# adesso chiamo la funzione con i parametri
+
+par1="Pippa"
+par2="Paperina"
+
+mia_fun_par $par1 $par2
+
+echo "Codice ritorno di mia_fun_par=$?"
+echo "glo_var=$glo_var"
+echo "loc_var=$loc_var e output=$output" # loc_var sarà vuoto
+echo
+
+# POSSO ANCHE CREARE FUNZIONI RICORSIVE!!!!
+
+#********************************************************************
+#
+#
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#
+#
+#********************************************************************
 
 
